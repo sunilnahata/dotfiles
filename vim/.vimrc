@@ -1,4 +1,53 @@
+" This file was obtained from: https://missing.csail.mit.edu/2020/files/vimrc
+" Modified by: Sunil Nahata
 " Comments in Vimscript start with a `"`.
+
+" Plugin setup
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/.vim/plugged')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'jalvesaq/Nvim-R', {'branch': 'stable'}
+Plugin 'ncm2/ncm2'
+Plugin 'ncm2/ncm2-bufword'
+Plugin 'ncm2/ncm2-path'
+Plugin 'ncm2/ncm2-ultisnips'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
+Plugin 'gaalcaras/ncm-R'
+Plugin 'preservim/nerdtree'
+Plugin 'Raimondi/delimitMate'
+Plugin 'patstockwell/vim-monokai-tasty'
+Plugin 'itchyny/lightline.vim'
+Plugin 'lervag/vimtex'
+Plugin 'dense-analysis/ale'
+Plugin 'nvie/vim-flake8'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just
+" :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to
+" auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
+" General NVIM/VIM Settings
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
@@ -52,6 +101,8 @@ set smartcase
 
 " Enable searching as you type, rather than waiting till you press enter.
 set incsearch
+set hlsearch                    " To highlight search results.
+set magic                       " For regular expressions turn magic on.
 
 " Unbind some useless/annoying default key bindings.
 nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
@@ -69,177 +120,71 @@ set mouse+=a
 " bad habit. The former is enforceable through a .vimrc, while we don't know
 " how to prevent the latter.
 " Do this in normal mode...
-"nnoremap <Left>  :echoe "Use h"<CR>
-"nnoremap <Right> :echoe "Use l"<CR>
-"nnoremap <Up>    :echoe "Use k"<CR>
-"nnoremap <Down>  :echoe "Use j"<CR>
-"" ...and in insert mode
-"inoremap <Left>  <ESC>:echoe "Use h"<CR>
-"inoremap <Right> <ESC>:echoe "Use l"<CR>
-"inoremap <Up>    <ESC>:echoe "Use k"<CR>
-"inoremap <Down>  <ESC>:echoe "Use j"<CR>
+nnoremap <Left>  :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up>    :echoe "Use k"<CR>
+nnoremap <Down>  :echoe "Use j"<CR>
+" ...and in insert mode
+inoremap <Left>  <ESC>:echoe "Use h"<CR>
+inoremap <Right> <ESC>:echoe "Use l"<CR>
+inoremap <Up>    <ESC>:echoe "Use k"<CR>
+inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
-" Specify a directory for plugins
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
-
-" List of plugins.
-" Make sure you use single quotes
-
-" Shorthand notation
-Plug 'jalvesaq/Nvim-R'
-Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-ultisnips'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'gaalcaras/ncm-R'
-Plug 'preservim/nerdtree'
-Plug 'Raimondi/delimitMate'
-Plug 'patstockwell/vim-monokai-tasty'
-Plug 'itchyny/lightline.vim'
-
-Plug 'lervag/vimtex'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal='abdmg'
-
-" Initialize plugin system
-call plug#end()
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/.vim/plugged')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Track the engine.
-Plugin 'SirVer/ultisnips'
-
- " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-" Set a Local Leader
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-
-" Plugin Related Settings
-
-" NCM2
-"autocmd BufEnter * call ncm2#enable_for_buffer()    " To enable ncm2 for all buffers.
-"set completeopt=noinsert,menuone,noselect           " :help Ncm2PopupOpen for more
-                                                    " information.
-
-" NERD Tree
-map <leader>nn :NERDTreeToggle<CR>                  " Toggle NERD tree.
-
-" Monokai-tasty
-let g:vim_monokai_tasty_italic = 1                  " Allow italics.
-colorscheme vim-monokai-tasty                       " Enable monokai theme.
-
-" LightLine.vim 
-set laststatus=2              " To tell Vim we want to see the statusline.
-let g:lightline = {
-   \ 'colorscheme':'monokai_tasty',
-   \ }
-
-
-" General NVIM/VIM Settings
 
 " Tabs & Navigation
-map <leader>nt :tabnew<cr>    " To create a new tab.
+map <leader>nt :tabnew<cr>      " To create a new tab.
 map <leader>to :tabonly<cr>     " To close all other tabs (show only the current tab).
 map <leader>tc :tabclose<cr>    " To close the current tab.
 map <leader>tm :tabmove<cr>     " To move the current tab to next position.
-map <leader>tn :tabn<cr>        " To swtich to next tab.
+map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
 
 
 " Line Numbers & Indentation
-set backspace=indent,eol,start  " To make backscape work in all conditions.
 set ma                          " To set mark a at current cursor location.
-set number                      " To switch the line numbers on.
 set expandtab                   " To enter spaces when tab is pressed.
 set smarttab                    " To use smart tabs.
 set autoindent                  " To copy indentation from current line 
                                 " when starting a new line.
 set si                          " To switch on smart indentation.
-
-
-" Search
-set ignorecase                  " To ignore case when searching.
-set smartcase                   " When searching try to be smart about cases.
-set hlsearch                    " To highlight search results.
-set incsearch                   " To make search act like search in modern browsers.
-set magic                       " For regular expressions turn magic on.
-
-
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=79                " Text-wrap
+set fileformat=unix
+set showcmd
 " Brackets
 set showmatch                   " To show matching brackets when text indicator 
                                 " is over them.
 set mat=2                       " How many tenths of a second to blink 
                                 " when matching brackets.
 
+set encoding=utf8               " Set utf8 as standard encoding and 
+                                " en_US as the standard language.
 
-" Color & Fonts
-syntax enable                   " Enable syntax highlighting.
-set encoding=utf8                " Set utf8 as standard encoding and 
-                                 " en_US as the standard language.
+set nobackup                    " Turn off backup.
+set nowb                        " Don't backup before overwriting a file.
+set noswapfile                  " Don't create a swap file.
+set ffs=unix,dos,mac            " Use Unix as the standard file type.
 
-" Enable 256 colors palette in Gnome Terminal.
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
+set t_Co=256                    " Set colours
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
-try
-    colorscheme desert
-catch
-endtry
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+let g:ale_linters = {'python': ['flake8']}
 
 
-" Files & Backup
-set nobackup                     " Turn off backup.
-set nowb                         " Don't backup before overwriting a file.
-set noswapfile                   " Don't create a swap file.
-set ffs=unix,dos,mac             " Use Unix as the standard file type.
-
-" Press enter key to trigger snippet expansion
-" " The parameters are the same as `:help feedkeys()`
-inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
-
-" c-j c-k for moving in snippet
-" let g:UltiSnipsExpandTrigger                = "<Plug>(ultisnips_expand)"
-let g:UltiSnipsJumpForwardTrigger     = "<c-j>"
-let g:UltiSnipsJumpBackwardTrigger    = "<c-k>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
+" Shorthand notation
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
