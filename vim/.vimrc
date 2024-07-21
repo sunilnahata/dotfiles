@@ -11,16 +11,10 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
 Plugin 'jalvesaq/Nvim-R', {'branch': 'stable'}
-Plugin 'ncm2/ncm2'
-Plugin 'ncm2/ncm2-bufword'
-Plugin 'ncm2/ncm2-path'
-Plugin 'ncm2/ncm2-ultisnips'
-Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'gaalcaras/ncm-R'
+"Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
 Plugin 'preservim/nerdtree'
 Plugin 'Raimondi/delimitMate'
 Plugin 'patstockwell/vim-monokai-tasty'
@@ -28,6 +22,7 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'lervag/vimtex'
 Plugin 'dense-analysis/ale'
 Plugin 'nvie/vim-flake8'
+Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -45,10 +40,18 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-
+set noshowmode
+let g:lightline = {
+            \ 'active': {
+            \ 'left': [ [ 'mode', 'paste' ],
+            \           [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'FugitiveHead'
+            \ },
+            \ }
 
 " General NVIM/VIM Settings
-
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
 " Vim is based on Vi. Setting `nocompatible` switches from the default
@@ -130,8 +133,6 @@ inoremap <Right> <ESC>:echoe "Use l"<CR>
 inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
-
-
 nmap g<C-O> o<ESC>k             " gO to create a new line below the cursor in normal mode
 nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the cursor in normal mode
 
@@ -143,7 +144,8 @@ map <leader>tm :tabmove<cr>     " To move the current tab to next position.
 map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
 
-
+set path+=**
+set wildmenu
 " Line Numbers & Indentation
 set ma                          " To set mark a at current cursor location.
 set expandtab                   " To enter spaces when tab is pressed.
@@ -179,6 +181,10 @@ colorscheme solarized
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
+let g:netrw_banner=0            " Disable banner
+let g:netrw_browse_split=4      " Open window in a vertical split
+let g:netrw_altv=1              " Open splits to the right
+let g:netrw_liststyle=3         " Tree view
 
 let g:ale_linters = {
     \   'python': ['flake8','pylint','ruff'],
