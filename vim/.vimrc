@@ -131,6 +131,10 @@ inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 
+
+nmap g<C-O> o<ESC>k             " gO to create a new line below the cursor in normal mode
+nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the cursor in normal mode
+
 " Tabs & Navigation
 map <leader>nt :tabnew<cr>      " To create a new tab.
 map <leader>to :tabonly<cr>     " To close all other tabs (show only the current tab).
@@ -176,8 +180,20 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 
-let g:ale_linters = {'python': ['flake8']}
-
+let g:ale_linters = {
+    \   'python': ['flake8','pylint','ruff'],
+    \   'sh': ['shellcheck'], 
+    \   'r': ['lintr'],   
+    \}
+let g:ale_linters_explicit = 1
+let g:ale_python_ruff_executable = 'ruff'
+let g:ale_python_ruff_options = ''
+let g:ale_fixers = {
+    \'python':['ruff'],
+    \}
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+let g:ale_fix_on_save = 1
 
 " Shorthand notation
 let g:tex_flavor='latex'
