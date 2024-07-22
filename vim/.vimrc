@@ -13,11 +13,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'jalvesaq/Nvim-R', {'branch': 'stable'}
 Plugin 'gaalcaras/ncm-R'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes'
 Plugin 'preservim/nerdtree'
 Plugin 'Raimondi/delimitMate'
-Plugin 'patstockwell/vim-monokai-tasty'
 Plugin 'itchyny/lightline.vim'
 Plugin 'lervag/vimtex'
 Plugin 'dense-analysis/ale'
@@ -40,7 +37,6 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-set noshowmode
 let g:lightline = {
             \ 'active': {
             \ 'left': [ [ 'mode', 'paste' ],
@@ -136,6 +132,9 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 nmap g<C-O> o<ESC>k             " gO to create a new line below the cursor in normal mode
 nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the cursor in normal mode
 
+set cursorline                  " Highlight current line
+:highlight Cursorline cterm=bold ctermbg=black
+
 " Tabs & Navigation
 map <leader>nt :tabnew<cr>      " To create a new tab.
 map <leader>to :tabonly<cr>     " To close all other tabs (show only the current tab).
@@ -144,8 +143,9 @@ map <leader>tm :tabmove<cr>     " To move the current tab to next position.
 map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
 
-set path+=**
-set wildmenu
+" set path+=**
+" set wildmenu
+
 " Line Numbers & Indentation
 set ma                          " To set mark a at current cursor location.
 set expandtab                   " To enter spaces when tab is pressed.
@@ -173,10 +173,12 @@ set nowb                        " Don't backup before overwriting a file.
 set noswapfile                  " Don't create a swap file.
 set ffs=unix,dos,mac            " Use Unix as the standard file type.
 
-set t_Co=256                    " Set colours
+if !has('gui running')
+    set t_Co=256                " Set colours
+endif
+set termguicolors
 set background=dark
-let g:solarized_termcolors=256
-colorscheme solarized
+colorscheme desert 
 
 set foldmethod=indent
 set foldlevel=99
