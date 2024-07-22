@@ -10,17 +10,17 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall | source ~/.vimrc
 endif
 
-call plug#begin(~/.vim/plugged) 
+call plug#begin('~/.vim/plugged') 
 
-Plugin 'jalvesaq/Nvim-R', {'branch': 'stable'}
-Plugin 'gaalcaras/ncm-R'
-Plugin 'preservim/nerdtree'
-Plugin 'Raimondi/delimitMate'
-Plugin 'itchyny/lightline.vim'
-Plugin 'lervag/vimtex'
-Plugin 'dense-analysis/ale'
-Plugin 'nvie/vim-flake8'
-Plugin 'tpope/vim-fugitive'
+Plug 'jalvesaq/Nvim-R'
+Plug 'gaalcaras/ncm-R'
+Plug 'preservim/nerdtree'
+Plug 'Raimondi/delimitMate'
+Plug 'itchyny/lightline.vim'
+Plug 'lervag/vimtex'
+Plug 'dense-analysis/ale'
+Plug 'nvie/vim-flake8'
+Plug 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
