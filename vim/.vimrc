@@ -1,7 +1,10 @@
 " This file was obtained from: https://missing.csail.mit.edu/2020/files/vimrc
 " Modified by: Sunil Nahata
 " Comments in Vimscript start with a `"`.
-
+set encoding=utf8               " Set utf8 as standard encoding and 
+set langmenu=en_US.UTF-8        " en_US as the standard language.
+set fileencoding=utf-8
+set termencoding=utf-8
 " Plugin setup
 " Set up vim-plug (if not present)
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -12,6 +15,8 @@ endif
 
 call plug#begin('~/.vim/plugged') 
 
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 Plug 'jalvesaq/Nvim-R'
 Plug 'gaalcaras/ncm-R'
 Plug 'preservim/nerdtree'
@@ -21,6 +26,7 @@ Plug 'lervag/vimtex'
 Plug 'dense-analysis/ale'
 Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-fugitive'
+Plug 'patstockwell/vim-monokai-tasty'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
@@ -105,6 +111,9 @@ set noerrorbells visualbell t_vb=
 " sometimes be convenient.
 set mouse+=a
 
+" Enable clipboard
+set clipboard=unnamedplus
+
 " Try to prevent bad habits like using the arrow keys for movement. This is
 " not the only possible bad habit. For example, holding down the h/j/k/l keys
 " for movement, rather than using more efficient movement commands, is also a
@@ -124,8 +133,11 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 nmap g<C-O> o<ESC>k             " gO to create a new line below the cursor in normal mode
 nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the cursor in normal mode
 
+" Remove trailing whitespace
+autocmd BufWritePre *.c,*.cpp,*.cc,*.h,*.hpp,*.py,*.r,*.sh :%s/\s\+$//e
+
 set cursorline                  " Highlight current line
-:highlight Cursorline cterm=bold ctermbg=black
+:highlight Cursorline cterm=bold ctermbg=black 
 
 " Tabs & Navigation
 map <leader>nt :tabnew<cr>      " To create a new tab.
@@ -151,14 +163,13 @@ set shiftwidth=4
 set textwidth=79                " Text-wrap
 set fileformat=unix
 set showcmd
+
 " Brackets
 set showmatch                   " To show matching brackets when text indicator 
                                 " is over them.
 set mat=2                       " How many tenths of a second to blink 
                                 " when matching brackets.
 
-set encoding=utf8               " Set utf8 as standard encoding and 
-                                " en_US as the standard language.
 
 set nobackup                    " Turn off backup.
 set nowb                        " Don't backup before overwriting a file.
@@ -168,12 +179,15 @@ set ffs=unix,dos,mac            " Use Unix as the standard file type.
 if !has('gui running')
     set t_Co=256                " Set colours
 endif
+
 set termguicolors
 set background=dark
-colorscheme desert 
+set noshowmode
+colorscheme vim-monokai-tasty 
 
 set foldmethod=indent
 set foldlevel=99
+
 nnoremap <space> za
 let g:netrw_banner=0            " Disable banner
 let g:netrw_browse_split=4      " Open window in a vertical split
@@ -194,6 +208,8 @@ let g:ale_fixers = {
 let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:ale_fix_on_save = 1
+let g:ale_remove_trailing_lines = 1
+let g:ale_trim_whitespace = 1
 
 " Shorthand notation
 let g:tex_flavor='latex'
