@@ -3,20 +3,15 @@
 " Comments in Vimscript start with a `"`.
 
 " Plugin setup
-" Set up Vundle (if not present)
-if empty(glob('~/.vim/bundle/Vundle.vim'))
-    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    autocmd VimEnter * PluginInstall | source ~/.vimrc
+" Set up vim-plug (if not present)
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source ~/.vimrc
 endif
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/.vim/plugged')
+call plug#begin(~/.vim/plugged) 
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
 Plugin 'jalvesaq/Nvim-R', {'branch': 'stable'}
 Plugin 'gaalcaras/ncm-R'
 Plugin 'preservim/nerdtree'
@@ -28,20 +23,11 @@ Plugin 'nvie/vim-flake8'
 Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()              " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
+
 " Put your non-Plugin stuff after this line
 let g:lightline = {
             \ 'active': {
