@@ -1,10 +1,11 @@
 " This file was obtained from: https://missing.csail.mit.edu/2020/files/vimrc
 " Modified by: Sunil Nahata
 " Comments in Vimscript start with a `"`.
-set encoding=utf8               " Set utf8 as standard encoding and 
+set encoding=utf8               " Set utf8 as standard encoding and
 set langmenu=en_US.UTF-8        " en_US as the standard language.
 set fileencoding=utf-8
 set termencoding=utf-8
+
 " Plugin setup
 " Set up vim-plug (if not present)
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -13,10 +14,13 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall | source ~/.vimrc
 endif
 
-call plug#begin('~/.vim/plugged') 
+call plug#begin('~/.vim/plugged')
 
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'jalvesaq/Nvim-R'
 Plug 'gaalcaras/ncm-R'
 Plug 'preservim/nerdtree'
@@ -33,7 +37,7 @@ call plug#end()              " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-
+packadd comment
 " Put your non-Plugin stuff after this line
 let g:lightline = {
             \ 'active': {
@@ -44,6 +48,16 @@ let g:lightline = {
             \   'gitbranch': 'FugitiveHead'
             \ },
             \ }
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
 
 " General NVIM/VIM Settings
 " If you open this file in Vim, it'll be syntax highlighted for you.
@@ -114,6 +128,8 @@ set mouse+=a
 " Enable clipboard
 set clipboard=unnamedplus
 
+setlocal colorcolumn=80
+
 " Try to prevent bad habits like using the arrow keys for movement. This is
 " not the only possible bad habit. For example, holding down the h/j/k/l keys
 " for movement, rather than using more efficient movement commands, is also a
@@ -137,7 +153,7 @@ nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the curso
 autocmd BufWritePre *.c,*.cpp,*.cc,*.h,*.hpp,*.py,*.r,*.sh :%s/\s\+$//e
 
 set cursorline                  " Highlight current line
-:highlight Cursorline cterm=bold ctermbg=black 
+:highlight Cursorline ctermbg=black
 
 " Tabs & Navigation
 map <leader>nt :tabnew<cr>      " To create a new tab.
@@ -147,14 +163,14 @@ map <leader>tm :tabmove<cr>     " To move the current tab to next position.
 map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
 
-" set path+=**
-" set wildmenu
+set path+=**
+set wildmenu
 
 " Line Numbers & Indentation
 set ma                          " To set mark a at current cursor location.
 set expandtab                   " To enter spaces when tab is pressed.
 set smarttab                    " To use smart tabs.
-set autoindent                  " To copy indentation from current line 
+set autoindent                  " To copy indentation from current line
                                 " when starting a new line.
 set si                          " To switch on smart indentation.
 set tabstop=4
@@ -165,9 +181,9 @@ set fileformat=unix
 set showcmd
 
 " Brackets
-set showmatch                   " To show matching brackets when text indicator 
+set showmatch                   " To show matching brackets when text indicator
                                 " is over them.
-set mat=2                       " How many tenths of a second to blink 
+set mat=2                       " How many tenths of a second to blink
                                 " when matching brackets.
 
 
@@ -183,7 +199,7 @@ endif
 set termguicolors
 set background=dark
 set noshowmode
-colorscheme vim-monokai-tasty 
+colorscheme vim-monokai-tasty
 
 set foldmethod=indent
 set foldlevel=99
@@ -195,21 +211,22 @@ let g:netrw_altv=1              " Open splits to the right
 let g:netrw_liststyle=3         " Tree view
 
 let g:ale_linters = {
-    \   'python': ['flake8','pylint','ruff'],
-    \   'sh': ['shellcheck'], 
-    \   'r': ['lintr'],   
+    \   'python': ['flake8','pylint','ruff','black', 'mypy'],
+    \   'sh': ['shellcheck'],
+    \   'r': ['lintr', 'languageserver'],
     \}
-let g:ale_linters_explicit = 1
-let g:ale_python_ruff_executable = 'ruff'
-let g:ale_python_ruff_options = ''
-let g:ale_fixers = {
-    \'python':['ruff'],
-    \}
-let g:ale_completion_enabled = 1
+" let g:ale_fixers = {
+"     \'python':['black'],
+"     \'*':['remove_trailing_lines', 'trim_whitespace'],
+"     \'r':['styler'],
+"     \}
+"let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:ale_fix_on_save = 1
-let g:ale_remove_trailing_lines = 1
-let g:ale_trim_whitespace = 1
+"set omnifunc=ale#completion#OmniFunc
+
+" Enable specific R linters
+"let g:ale_r_lintr_lintcache = 1
 
 " Shorthand notation
 let g:tex_flavor='latex'
@@ -221,4 +238,3 @@ let g:tex_conceal='abdmg'
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 let g:python3_host_prog = '/usr/bin/python3'
-
