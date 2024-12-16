@@ -146,3 +146,4 @@ export NXF_OFFLINE='true'
 . "$HOME/.cargo/env"
 export GOPATH=${HOME}/go
 export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
+export NXF_SINGULARITY_CACHEDIR=$HOME/.singularity/cache

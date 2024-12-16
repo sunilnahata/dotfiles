@@ -31,13 +31,16 @@ Plug 'dense-analysis/ale'
 Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-fugitive'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
 filetype plugin indent on    " required
+colorscheme dracula
+
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-packadd comment
+packadd! comment
 " Put your non-Plugin stuff after this line
 let g:lightline = {
             \ 'active': {
