@@ -32,6 +32,7 @@ Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-fugitive'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'mktle/dna.vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
