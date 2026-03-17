@@ -4,7 +4,6 @@
 set encoding=utf8               " Set utf8 as standard encoding and
 set langmenu=en_US.UTF-8        " en_US as the standard language.
 set fileencoding=utf-8
-set termencoding=utf-8
 
 " Plugin setup
 " Set up vim-plug (if not present)
@@ -13,6 +12,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall | source ~/.vimrc
 endif
+
+set updatetime=300
+set signcolumn=yes
+set completeopt=menuone,noinsert,noselect
 
 call plug#begin('~/.vim/plugged')
 
@@ -24,15 +27,15 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'jalvesaq/Nvim-R'
 Plug 'gaalcaras/ncm-R'
 Plug 'preservim/nerdtree'
-Plug 'Raimondi/delimitMate'
 Plug 'itchyny/lightline.vim'
 Plug 'lervag/vimtex'
 Plug 'dense-analysis/ale'
-Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-fugitive'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mktle/dna.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
@@ -41,7 +44,6 @@ colorscheme dracula
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-packadd! comment
 " Put your non-Plugin stuff after this line
 let g:lightline = {
             \ 'active': {
@@ -132,7 +134,7 @@ set mouse+=a
 " Enable clipboard
 set clipboard=unnamedplus
 
-setlocal colorcolumn=80
+set colorcolumn=80
 
 " Try to prevent bad habits like using the arrow keys for movement. This is
 " not the only possible bad habit. For example, holding down the h/j/k/l keys
@@ -154,7 +156,7 @@ nmap g<C-O> o<ESC>k             " gO to create a new line below the cursor in no
 nmap gO O<ESC>j                 " g<Ctrl+o> to create a new line above the cursor in normal mode
 
 " Remove trailing whitespace
-autocmd BufWritePre *.c,*.cpp,*.cc,*.h,*.hpp,*.py,*.r,*.sh :%s/\s\+$//e
+"autocmd BufWritePre *.c,*.cpp,*.cc,*.h,*.hpp,*.py,*.r,*.sh :%s/\s\+$//e
 
 set cursorline                  " Highlight current line
 :highlight Cursorline ctermbg=black
@@ -166,6 +168,12 @@ map <leader>tc :tabclose<cr>    " To close the current tab.
 map <leader>tm :tabmove<cr>     " To move the current tab to next position.
 map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
+
+" Splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 set path+=**
 set wildmenu
@@ -187,9 +195,6 @@ set showcmd
 " Brackets
 set showmatch                   " To show matching brackets when text indicator
                                 " is over them.
-set mat=2                       " How many tenths of a second to blink
-                                " when matching brackets.
-
 
 set nobackup                    " Turn off backup.
 set nowb                        " Don't backup before overwriting a file.
@@ -215,9 +220,9 @@ let g:netrw_altv=1              " Open splits to the right
 let g:netrw_liststyle=3         " Tree view
 
 let g:ale_linters = {
-    \   'python': ['flake8','pylint','ruff','black', 'mypy'],
+    \   'python': ['ruff', 'mypy'],
     \   'sh': ['shellcheck'],
-    \   'r': ['lintr', 'languageserver'],
+    \   'r': ['languageserver'],
     \}
 " let g:ale_fixers = {
 "     \'python':['black'],
@@ -238,6 +243,7 @@ let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
+let g:vimtex_compiler_method = 'latexmk'
 
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
