@@ -27,7 +27,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'jalvesaq/Nvim-R'
 Plug 'gaalcaras/ncm-R'
 Plug 'preservim/nerdtree'
-Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/lightline.vim'
 Plug 'lervag/vimtex'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
@@ -36,24 +36,30 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mktle/dna.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
 filetype plugin indent on    " required
-colorscheme dracula
+"colorscheme dracula
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 " Put your non-Plugin stuff after this line
-let g:lightline = {
-            \ 'active': {
-            \ 'left': [ [ 'mode', 'paste' ],
-            \           [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
-            \ },
-            \ 'component_function': {
-            \   'gitbranch': 'FugitiveHead'
-            \ },
-            \ }
+"let g:lightline = {
+"            \ 'active': {
+"            \ 'left': [ [ 'mode', 'paste' ],
+"            \           [ 'gitbranch', 'readonly', 'filename', 'modified'] ]
+"            \ },
+"            \ 'component_function': {
+"            \   'gitbranch': 'FugitiveHead'
+"            \ },
+"            \ }
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_powerline_fonts = 1
 
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
