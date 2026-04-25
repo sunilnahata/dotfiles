@@ -32,18 +32,19 @@ Plug 'lervag/vimtex'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'patstockwell/vim-monokai-tasty'
-Plug 'dracula/vim', { 'as': 'dracula' }
+"Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mktle/dna.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'arcticicestudio/nord-vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
 filetype plugin indent on    " required
 "colorscheme dracula
-
+colorscheme nord
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 " Put your non-Plugin stuff after this line
@@ -56,10 +57,10 @@ filetype plugin indent on    " required
 "            \   'gitbranch': 'FugitiveHead'
 "            \ },
 "            \ }
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_powerline_fonts = 1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+"let g:airline_powerline_fonts = 1
 
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
@@ -214,7 +215,7 @@ endif
 set termguicolors
 set background=dark
 set noshowmode
-colorscheme vim-monokai-tasty
+"colorscheme vim-monokai-tasty
 
 set foldmethod=indent
 set foldlevel=99
