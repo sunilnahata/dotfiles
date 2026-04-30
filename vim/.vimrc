@@ -20,6 +20,8 @@ set completeopt=menuone,noinsert,noselect
 call plug#begin('~/.vim/plugged')
 
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
@@ -34,7 +36,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'patstockwell/vim-monokai-tasty'
 "Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mktle/dna.vim'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -42,11 +44,10 @@ Plug 'arcticicestudio/nord-vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()              " required
-filetype plugin indent on    " required
-"colorscheme dracula
 colorscheme nord
+
 " To ignore plugin indent changes, instead use:
-"filetype plugin on
+filetype plugin indent on
 " Put your non-Plugin stuff after this line
 "let g:lightline = {
 "            \ 'active': {
@@ -61,9 +62,30 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
 
+let mapleader = ","
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
 endfunction
 
 augroup lsp_install
@@ -172,6 +194,7 @@ set cursorline                  " Highlight current line
 map <leader>nt :tabnew<cr>      " To create a new tab.
 map <leader>to :tabonly<cr>     " To close all other tabs (show only the current tab).
 map <leader>tc :tabclose<cr>    " To close the current tab.
+
 map <leader>tm :tabmove<cr>     " To move the current tab to next position.
 map <leader>tn :tabn<cr>        " To switch to next tab.
 map <leader>tp :tabp<cr>        " To switch to previous tab.
@@ -215,34 +238,50 @@ endif
 set termguicolors
 set background=dark
 set noshowmode
-"colorscheme vim-monokai-tasty
 
 set foldmethod=indent
 set foldlevel=99
 
 nnoremap <space> za
+nnoremap <leader>e :NERDTreeToggle<CR>
 let g:netrw_banner=0            " Disable banner
 let g:netrw_browse_split=4      " Open window in a vertical split
 let g:netrw_altv=1              " Open splits to the right
 let g:netrw_liststyle=3         " Tree view
 
+let g:ale_disable_lsp = 1
+
 let g:ale_linters = {
     \   'python': ['ruff', 'mypy'],
+    \   'r': ['lintr'],
     \   'sh': ['shellcheck'],
-    \   'r': ['languageserver'],
+    \   'tex': ['chktex'],
+    \   'markdown': ['markdownlint'],
+    \   'cpp': ['clangtidy'],
+    \   'c': ['clangtidy'],
+    \   'rust': ['cargo'],
+    \   'java': ['checkstyle'],
     \}
-" let g:ale_fixers = {
-"     \'python':['black'],
-"     \'*':['remove_trailing_lines', 'trim_whitespace'],
-"     \'r':['styler'],
-"     \}
+
+let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'python': ['ruff', 'ruff_format'],
+    \   'r': ['styler'],
+    \   'sh': ['shfmt'],
+    \   'cpp': ['clangformat'],
+    \   'c': ['clangformat'],
+    \   'rust': ['rustfmt'],
+    \   'markdown': ['prettier'],
+    \}
+
 "let g:ale_completion_enabled = 1
-let g:ale_sign_column_always = 1
+"let g:ale_sign_column_always = 1
 let g:ale_fix_on_save = 1
 "set omnifunc=ale#completion#OmniFunc
-
-" Enable specific R linters
+"
+"" Enable specific R linters
 "let g:ale_r_lintr_lintcache = 1
+
 
 " Shorthand notation
 let g:tex_flavor='latex'
@@ -254,4 +293,3 @@ let g:vimtex_compiler_method = 'latexmk'
 
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-let g:python3_host_prog = '/usr/bin/python3'
